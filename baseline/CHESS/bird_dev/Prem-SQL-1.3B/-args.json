@@ -1,0 +1,87 @@
+{
+    "data_mode": "dev",
+    "data_path": "./data/dev/dev.json",
+    "config": {
+        "setting_name": "CHESS_prem_IR_SS_CG",
+        "team_agents": {
+            "information_retriever": {
+                "engine": "premai-io/prem-1B-SQL",
+                "tools": {
+                    "extract_keywords": {
+                        "template_name": "extract_keywords",
+                        "engine_config": {
+                            "engine_name": "premai-io/prem-1B-SQL",
+                            "temperature": 0.2
+                        },
+                        "parser_name": "python_list_output_parser"
+                    },
+                    "retrieve_entity": {},
+                    "retrieve_context": {
+                        "top_k": 5
+                    }
+                }
+            },
+            "schema_selector": {
+                "engine": "premai-io/prem-1B-SQL",
+                "tools": {
+                    "filter_column": {
+                        "template_name": "filter_column",
+                        "engine_config": {
+                            "engine_name": "premai-io/prem-1B-SQL",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "filter_column"
+                    },
+                    "select_tables": {
+                        "mode": "ask_model",
+                        "template_name": "select_tables",
+                        "engine_config": {
+                            "engine_name": "premai-io/prem-1B-SQL",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "select_tables"
+                    },
+                    "select_columns": {
+                        "mode": "ask_model",
+                        "template_name": "select_columns",
+                        "engine_config": {
+                            "engine_name": "premai-io/prem-1B-SQL",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "select_columns"
+                    }
+                }
+            },
+            "candidate_generator": {
+                "engine": "premai-io/prem-1B-SQL",
+                "tools": {
+                    "generate_candidate": {
+                        "generator_configs": [
+                            {
+                                "template_name": "generate_candidate_one",
+                                "engine_config": {
+                                    "engine_name": "premai-io/prem-1B-SQL",
+                                    "temperature": 0.01
+                                },
+                                "parser_name": "generate_candidate_gemini_markdown_cot",
+                                "sampling_count": 1
+                            }
+                        ]
+                    },
+                    "revise": {
+                        "template_name": "revise_one",
+                        "engine_config": {
+                            "engine_name": "premai-io/prem-1B-SQL",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "revise_new"
+                    }
+                }
+            }
+        }
+    },
+    "num_workers": 4,
+    "log_level": "warning",
+    "pick_final_sql": true,
+    "run_start_time": "2025-01-18T14:04:46.494178"
+}

@@ -1,0 +1,87 @@
+{
+    "data_mode": "test",
+    "data_path": "./data_spider/spider_test.json",
+    "config": {
+        "setting_name": "CHESS_Qwen",
+        "team_agents": {
+            "information_retriever": {
+                "engine": "Qwen/Qwen2.5-1.5B-Instruct",
+                "tools": {
+                    "extract_keywords": {
+                        "template_name": "extract_keywords",
+                        "engine_config": {
+                            "engine_name": "Qwen/Qwen2.5-1.5B-Instruct",
+                            "temperature": 0.2
+                        },
+                        "parser_name": "python_list_output_parser"
+                    },
+                    "retrieve_entity": {},
+                    "retrieve_context": {
+                        "top_k": 5
+                    }
+                }
+            },
+            "schema_selector": {
+                "engine": "Qwen/Qwen2.5-1.5B-Instruct",
+                "tools": {
+                    "filter_column": {
+                        "template_name": "filter_column",
+                        "engine_config": {
+                            "engine_name": "Qwen/Qwen2.5-1.5B-Instruct",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "filter_column"
+                    },
+                    "select_tables": {
+                        "mode": "ask_model",
+                        "template_name": "select_tables",
+                        "engine_config": {
+                            "engine_name": "Qwen/Qwen2.5-1.5B-Instruct",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "select_tables"
+                    },
+                    "select_columns": {
+                        "mode": "ask_model",
+                        "template_name": "select_columns",
+                        "engine_config": {
+                            "engine_name": "Qwen/Qwen2.5-1.5B-Instruct",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "select_columns"
+                    }
+                }
+            },
+            "candidate_generator": {
+                "engine": "Qwen/Qwen2.5-1.5B-Instruct",
+                "tools": {
+                    "generate_candidate": {
+                        "generator_configs": [
+                            {
+                                "template_name": "generate_candidate_finetuned",
+                                "engine_config": {
+                                    "engine_name": "Qwen/Qwen2.5-1.5B-Instruct",
+                                    "temperature": 0.01
+                                },
+                                "parser_name": "generate_candidate_gemini_markdown_cot",
+                                "sampling_count": 1
+                            }
+                        ]
+                    },
+                    "revise": {
+                        "template_name": "revise_two",
+                        "engine_config": {
+                            "engine_name": "Qwen/Qwen2.5-1.5B-Instruct",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "revise_new"
+                    }
+                }
+            }
+        }
+    },
+    "num_workers": 4,
+    "log_level": "warning",
+    "pick_final_sql": true,
+    "run_start_time": "2025-02-07T22:29:03.299872"
+}

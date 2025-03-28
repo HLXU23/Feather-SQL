@@ -1,0 +1,87 @@
+{
+    "data_mode": "dev",
+    "data_path": "./data/dev/dev.json",
+    "config": {
+        "setting_name": "CHESS_Yi_IR_SS_CG",
+        "team_agents": {
+            "information_retriever": {
+                "engine": "01-ai/Yi-Coder-1.5B-Chat",
+                "tools": {
+                    "extract_keywords": {
+                        "template_name": "extract_keywords",
+                        "engine_config": {
+                            "engine_name": "01-ai/Yi-Coder-1.5B-Chat",
+                            "temperature": 0.2
+                        },
+                        "parser_name": "python_list_output_parser"
+                    },
+                    "retrieve_entity": {},
+                    "retrieve_context": {
+                        "top_k": 5
+                    }
+                }
+            },
+            "schema_selector": {
+                "engine": "01-ai/Yi-Coder-1.5B-Chat",
+                "tools": {
+                    "filter_column": {
+                        "template_name": "filter_column_cut",
+                        "engine_config": {
+                            "engine_name": "01-ai/Yi-Coder-1.5B-Chat",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "filter_column"
+                    },
+                    "select_tables": {
+                        "mode": "ask_model",
+                        "template_name": "select_tables",
+                        "engine_config": {
+                            "engine_name": "01-ai/Yi-Coder-1.5B-Chat",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "select_tables"
+                    },
+                    "select_columns": {
+                        "mode": "ask_model",
+                        "template_name": "select_columns",
+                        "engine_config": {
+                            "engine_name": "01-ai/Yi-Coder-1.5B-Chat",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "select_columns"
+                    }
+                }
+            },
+            "candidate_generator": {
+                "engine": "01-ai/Yi-Coder-1.5B-Chat",
+                "tools": {
+                    "generate_candidate": {
+                        "generator_configs": [
+                            {
+                                "template_name": "generate_candidate_finetuned",
+                                "engine_config": {
+                                    "engine_name": "01-ai/Yi-Coder-1.5B-Chat",
+                                    "temperature": 0.01
+                                },
+                                "parser_name": "generate_candidate_gemini_markdown_cot",
+                                "sampling_count": 1
+                            }
+                        ]
+                    },
+                    "revise": {
+                        "template_name": "revise_two",
+                        "engine_config": {
+                            "engine_name": "01-ai/Yi-Coder-1.5B",
+                            "temperature": 0.0
+                        },
+                        "parser_name": "revise_new"
+                    }
+                }
+            }
+        }
+    },
+    "num_workers": 4,
+    "log_level": "warning",
+    "pick_final_sql": true,
+    "run_start_time": "2025-01-21T04:29:14.645853"
+}
