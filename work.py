@@ -15,7 +15,7 @@ logging.getLogger("transformers").setLevel(logging.ERROR)
 
 url_1 = "http://localhost:8001/v1"
 url_2 = "http://localhost:8000/v1"
-api_key = "sk-012940e66b134099afe60e66eff7ee6e"
+api_key = ""
 model_1 = "premai-io/prem-1B-SQL"
 model_2 = "deepseek-ai/deepseek-coder-1.3b-instruct"
 dev_path = '/home/zhangzn/peiwenqi/SLM/dev.json'
