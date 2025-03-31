@@ -40,7 +40,7 @@ def work(dev_input, sql_limit=1):
     
     # Generate sql candidates
     sql_queries = set()
-    prompt_gennum = int(12/len(prompts))
+    prompt_gennum = int(8/len(prompts))
     for prompt in prompts:
         responses = generation_multiple(model_sql, system_prompt_sql_generation, prompt, prompt_gennum)
         for sql in responses:
@@ -103,13 +103,14 @@ for qid in tqdm.trange(max_qid + 1, len(nl_questions)):
     
     # Continual evaluation
     # Note: comment this part if no ground truth revealed
-    Syntax_Correct, Semantic_Correct = False, False
-    ground_truth = get_ground_truth(nl_question) 
-    model_result = execute_model_answer(nl_question, answer)
-    if 'Execution Error' not in model_result:
-        Syntax_Correct = True
-        if ground_truth == model_result:
-            Semantic_Correct = True
+    if len(answer_sql) > 0:
+        Syntax_Correct, Semantic_Correct = False, False
+        ground_truth = get_ground_truth(nl_question) 
+        model_result = execute_model_answer(nl_question, answer)
+        if 'Execution Error' not in model_result:
+            Syntax_Correct = True
+            if ground_truth == model_result:
+                Semantic_Correct = True
     new_row = [qid, Syntax_Correct, Semantic_Correct]
     df.loc[len(df)] = new_row
     df.to_csv(csv_output_path, index=False)
