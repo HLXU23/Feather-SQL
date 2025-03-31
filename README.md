@@ -91,5 +91,3 @@ The following outputs will be generated during and after execution:
    - `results.json`: Final results after all tests.
    - `results.csv`: Incremental results updated during execution.
 ---
-
-For further assistance, please contact [wenqipei@foxmail.com](mailto:wenqipei@foxmail.com).
